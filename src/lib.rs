@@ -11,7 +11,8 @@ pub use instructions::*;
 entrypoint!(process_instruction);
 nostd_panic_handler!();
 
-solana_address::declare_id!("22222222222222222222222222222222222222222222");
+pub const ID: Address =
+    pinocchio::address::address!("22222222222222222222222222222222222222222222");
 
 fn process_instruction(
     _program_id: &Address,

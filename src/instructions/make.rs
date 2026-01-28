@@ -1,6 +1,6 @@
 use crate::helpers::*;
 use pinocchio::{
-    AccountView, ProgramResult,
+    AccountView, Address, ProgramResult,
     cpi::{Seed, Signer},
     error::ProgramError,
 };
@@ -42,7 +42,7 @@ impl<'a> TryFrom<&'a [AccountView]> for MakeAccounts<'a> {
         MintAccount::check(mint_b)?;
         AssociatedTokenAccount::check(maker_ata_a, maker, mint_a, token_program)?;
 
-        let (vault_key, _) = solana_address::Address::find_program_address(
+        let (vault_key, _) = Address::find_program_address(
             &[
                 escrow.address().as_ref(),
                 pinocchio_token::ID.as_ref(),
@@ -106,7 +106,7 @@ impl<'a> TryFrom<(&'a [u8], &'a [AccountView])> for Make<'a> {
     fn try_from((data, accounts): (&'a [u8], &'a [AccountView])) -> Result<Self, Self::Error> {
         let accounts = MakeAccounts::try_from(accounts)?;
         let instruction_data = MakeInstructionData::try_from(data)?;
-        let (_, bump) = solana_address::Address::find_program_address(
+        let (_, bump) = Address::find_program_address(
             &[
                 b"escrow",
                 accounts.maker.address().as_ref(),
